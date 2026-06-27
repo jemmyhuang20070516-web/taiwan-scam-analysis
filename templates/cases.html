@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>詐騙案例查詢</title>
+</head>
+<body>
+    <h1>詐騙案例查詢</h1>
+
+    <a href="/">回首頁</a>
+
+    <hr>
+
+    <form method="get">
+        <input type="text" name="keyword" placeholder="輸入關鍵字，例如：投資、LINE、匯款">
+        <button type="submit">搜尋</button>
+    </form>
+
+    <h2>案例列表</h2>
+
+    {% for case in cases %}
+        <div style="border:1px solid #ccc; padding:15px; margin:15px;">
+            <h3>{{ case.title }}</h3>
+            <p><b>類型：</b>{{ case.type }}</p>
+            <p><b>金額：</b>{{ case.money }}</p>
+            <p>{{ case.content }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>

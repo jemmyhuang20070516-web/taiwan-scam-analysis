@@ -1,21 +1,202 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>165 反詐騙案例</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>詐騙案件列表</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 30px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+
+        .top-buttons {
+            margin-bottom: 20px;
+        }
+
+        .add-button {
+            display: inline-block;
+            padding: 10px 18px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 18px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-left: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #cccccc;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #eeeeee;
+        }
+
+        .id-column {
+            width: 50px;
+        }
+
+        .date-column {
+            width: 180px;
+        }
+
+        .action-column {
+            width: 150px;
+        }
+
+        .content {
+            max-width: 500px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .edit-button {
+            display: inline-block;
+            padding: 7px 12px;
+            background-color: #f0ad4e;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .delete-form {
+            display: inline;
+        }
+
+        .delete-button {
+            padding: 7px 12px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 25px;
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>165 反詐騙案例</h1>
+<div class="container">
 
-{% for case in cases %}
-    <div>
-        <h2>{{ case.title }}</h2>
-        <p>日期：{{ case.publish_date }}</p>
-        <p>{{ case.content }}</p>
-        <hr>
+    <h1>詐騙案件列表</h1>
+
+    <div class="top-buttons">
+        <a class="add-button" href="{{ url_for('add_case') }}">
+            新增案件
+        </a>
+
+        <a class="home-button" href="{{ url_for('index') }}">
+            回首頁
+        </a>
     </div>
-{% endfor %}
+
+    <table>
+        <thead>
+            <tr>
+                <th class="id-column">ID</th>
+                <th>案件標題</th>
+                <th class="date-column">發布日期</th>
+                <th>案件內容</th>
+                <th class="action-column">操作</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for case in cases %}
+
+            <tr>
+                <td>{{ case.id }}</td>
+
+                <td>{{ case.title }}</td>
+
+                <td>{{ case.publish_date or '' }}</td>
+
+                <td class="content">
+                    {{ case.content or '' }}
+                </td>
+
+                <td>
+                    <a
+                        class="edit-button"
+                        href="{{ url_for('edit_case', case_id=case.id) }}"
+                    >
+                        修改
+                    </a>
+
+                    <form
+                        class="delete-form"
+                        action="{{ url_for('remove_case', case_id=case.id) }}"
+                        method="POST"
+                        onsubmit="return confirm('確定要刪除這筆資料嗎？');"
+                    >
+                        <button
+                            class="delete-button"
+                            type="submit"
+                        >
+                            刪除
+                        </button>
+                    </form>
+                </td>
+            </tr>
+
+            {% else %}
+
+            <tr>
+                <td class="empty-message" colspan="5">
+                    目前沒有資料
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
 
 </body>
 </html>

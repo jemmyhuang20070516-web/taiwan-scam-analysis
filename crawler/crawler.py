@@ -1,6 +1,11 @@
+import sys
+import os
 import requests
 from bs4 import BeautifulSoup
-from save_data import save_to_csv
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from db import insert_case
 
 print("程式真的開始執行了")
 
@@ -48,4 +53,11 @@ for item in data:
 
 print("總共抓到：", len(all_data), "筆資料")
 
-save_to_csv(all_data)
+for case in all_data:
+    insert_case(
+        case["title"],
+        case["publish_date"],
+        case["content"]
+    )
+
+print("資料已寫入 PostgreSQL")
